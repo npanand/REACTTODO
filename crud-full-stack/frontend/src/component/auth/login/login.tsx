@@ -3,10 +3,11 @@ import react, { useState } from "react";
 import * as Yup from 'yup';
 import "./login.css";
 import axios from "axios";
-import { BrowserRouter, Navigate, redirect, useNavigate } from "react-router-dom";
+import { BrowserRouter, Navigate, useNavigate } from "react-router-dom";
 import { toast } from 'react-toastify';
-import { Sign } from "crypto";
-import Signup from "./signup/signup";
+
+import Signup from "../signup/signup";
+import { logIn } from "../../service/auth";
 
 const getCharacterValidationError = (str: string) => {
   return `Your password must have at least 1 ${str} character`;
@@ -24,19 +25,17 @@ const loginSchema = Yup.object().shape({
     .matches(/[A-Z]/, getCharacterValidationError("uppercase")),
 })
 
-
 const Login = () => {
 
   const navigate = useNavigate();
   const [loginPage, setLoginPage] = useState(true);
 
-  const getJwt = async (values: any) => {
-    console.log(values);
+  const getJwt = (values: any) => {
     try {
-      await axios.post("http://localhost:4000/api/users/login", values).then((res: any) => {
+      logIn(values).then((res: any) => {
         console.log(res);
         if (res && res.status === 201) {
-          console.log("sucess");
+          // console.log("sucess");
           sessionStorage.setItem("jwt", res.data.token);
           toast.success('This is a success notification', {
             position: toast.POSITION.TOP_RIGHT,
@@ -45,7 +44,7 @@ const Login = () => {
           console.log(sessionStorage.getItem("jwt"));
           sessionStorage.setItem("isloggedin", "success");
           navigate('/addData');
-          window.location.reload();
+           window.location.reload();
         }
         else {
           toast.error('login Failed', {
@@ -56,7 +55,7 @@ const Login = () => {
 
 
       }).catch((err: any) => {
-        
+
         toast.error('api error', {
           position: toast.POSITION.TOP_RIGHT,
           autoClose: 4000, // Close after 3 seconds
@@ -118,7 +117,7 @@ const Login = () => {
                               <Field name="email" id="email" type="email" placeholder="email" />
                               {errors.email && touched.email ? <div style={{ color: "red" }}>{errors.email}</div> : null}
                             </div>
-                          
+
                           </div>
                           <div>
                             <div style={{ textAlign: 'center', width: "100%" }}>
@@ -128,7 +127,7 @@ const Login = () => {
                               <Field name="password" id="password" type="password" placeholder="password" />
                               {errors.password && touched.password ? <div style={{ color: "red" }}>{errors.password}</div> : null}
                             </div>
-                           
+
                           </div>
 
                           <div style={{ textAlign: "center", marginTop: "30px" }}>
@@ -141,9 +140,9 @@ const Login = () => {
                   </div>
                 )}
               </Formik>
-            </> : 
-           
-            <Signup loginpageroute={()=>{setLoginPage(true)}}/>
+            </> :
+
+              <Signup loginpageroute={() => { setLoginPage(true) }} />
           }
         </div>
       </div>

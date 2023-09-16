@@ -3,6 +3,7 @@ import { Field, Form, Formik } from 'formik';
 import React from 'react';
 import { toast } from 'react-toastify';
 import * as Yup from 'yup';
+import { signUp } from "../../service/auth";
 
 const getCharacterValidationError = (str: string) => {
     return `Your password must have at least 1 ${str} character`;
@@ -23,10 +24,10 @@ const signupSchema = Yup.object().shape({
 
 const Signup=({loginpageroute}:any)=>{
 
-    const signup = async (values: any) => {
+    const signup =  (values: any) => {
         console.log(values);
         try {
-          await axios.post("http://localhost:4000/api/users", values).then((res: any) => {
+          signUp(values).then((res: any) => {
             if(res&&res.status===201){
                 loginpageroute();
             toast.success('registration sucess', {
