@@ -101,21 +101,21 @@ function AddData() {
     }
     updateTodoData(data).then((res) => {
       if (res && res.status === 200) {
-        if (res && res.status == 200) {
-          getData();
-          toast.success('successfully data update', {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 4000, // Close after 3 seconds
-          });
-        }
-        else {
-          toast.error('update failed', {
-            position: toast.POSITION.TOP_RIGHT,
-            autoClose: 4000, // Close after 3 seconds
-          });
-        }
-
+        getData();
+        setmode("add");
+        toast.success('successfully data update', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 4000, // Close after 3 seconds
+        });
       }
+      else {
+        toast.error('update failed', {
+          position: toast.POSITION.TOP_RIGHT,
+          autoClose: 4000, // Close after 3 seconds
+        });
+      }
+
+
     }).catch((err) => {
       toast.error('network failed', {
         position: toast.POSITION.TOP_RIGHT,
@@ -126,7 +126,7 @@ function AddData() {
   }
 
   return (
-    <div className='bg-red-200  shadow-xl   min-h-screen flex items-center    justify-center'>
+    <div className='bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%   shadow-xl   min-h-screen flex items-center    justify-center'>
       <div className='w-96 h-full  shadow-xl bg-white rounded-md'>
         <div>
           <Formik
@@ -151,25 +151,27 @@ function AddData() {
                           <label htmlFor="tododata" className='text-center '><h4 >INSERT TODO</h4></label>
                         </div>
                         <div className='text-center'>
-                          <Field name="tododata" id="tododata" type="text" placeholder="insert Data" className="mt-1 block w-full px-3 py-1 bg-white border border-slate-800 rounded-md text-sm shadow-sm placeholder-slate-400
-      focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
-      disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
-      invalid:border-pink-500 invalid:text-pink-600
-      focus:invalid:border-pink-500 focus:invalid:ring-pink-500" />
+                          <Field name="tododata" id="tododata" type="text" placeholder="insert Data" className="mt-1 block mx-auto px-5 py-1 bg-white border border-slate-800 rounded-md text-sm shadow-sm placeholder-slate-400
+                                                                                                       focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
+                                                                                                       disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
+                                                                                                       invalid:border-pink-500 invalid:text-pink-600
+                                                                                                       focus:invalid:border-pink-500 focus:invalid:ring-pink-500" />
                           {errors.tododata && touched.tododata ? <div style={{ color: "red" }}>{errors.tododata}</div> : null}
                         </div>
                       </div>}
                       {
 
                         mode !== "add" && <div >
-                          <div className="text-center m-2">
-                            <label htmlFor="updatetodo"><h3 >update Data</h3></label>
-                            <h5 className="text-center w-full">{updateTodo}</h5>
-                            <h5 className="text-center w-full" ><AiOutlineArrowDown /></h5>
-                          </div>
+                          <div className="text-center mt-2">
+                            <label htmlFor="updatetodo"><h3 className='uppercase'>update Data</h3></label>
 
+                          </div>
+                          <div className="text-xl ">
+                            <h5 className="text-center w-full bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">{updateTodo}</h5>
+                            <h5><AiOutlineArrowDown className="text-center mx-auto" /></h5>
+                          </div>
                           <div className="text-center m-2">
-                            <Field name="modified" id="updatetodo" type="text" placeholder="update Data" className="mt-1 block w-full px-3 py-2 bg-white border border-slate-800 rounded-md text-sm shadow-sm placeholder-slate-400
+                            <Field name="modified" id="updatetodo" type="text" placeholder="update Data" className="mt-1 block mx-auto px-5 py-1 bg-white border border-slate-800 rounded-md text-sm shadow-sm placeholder-slate-400
       focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
       disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none
       invalid:border-pink-500 invalid:text-pink-600
@@ -179,19 +181,20 @@ function AddData() {
                         </div>
                       }
                     </div>
-                    <div className="rounded-full text-green-100 text-center m-8 px-4 p-2 bg-lime-600 cursor-pointer">
-                      <button type="submit">Submit</button>
+                    <div className='text-center'>
+                      <button className="rounded-full text-green-100 text-center m-4 px-20 p-2 bg-lime-600 cursor-pointer" type="submit">Submit</button>
                     </div>
                     {
-                      mode !== "add" && <div className="rounded-full text-green-100 text-center m-8 px-4 p-2 bg-red-600 cursor-pointer text-center  ">
-                        <button type="button" onClick={() => setmode("add")}>update cancel</button>
+                      mode !== "add" && <div className='text-center' >
+                        <button className="rounded-full text-green-100 text-center  px-20 p-2 bg-red-600 cursor-pointer text-center mb-2 " type="button" onClick={() => setmode("add")}>cancel</button>
                       </div>
                     }
-                    {todolist.length === 0 && <div className='div-list-data'>
-                      <h1 style={{ textAlign: "center" }}> no data found</h1>
+
+                    {todolist && todolist.length === 0 && <div className='border-orange-600 w-80 h-40 overflow-auto border-2 border-solid mx-auto mb-2'>
+                      <h1 className=' text-center my-auto' > no data found</h1>
                     </div>}
 
-                    {todolist && todolist.length > 0 && <div className='div-list-data'>
+                    {todolist && todolist.length > 0 && <div className='border-orange-600 w-80 h-40 mb-5 overflow-auto border-2 border-solid mx-auto'>
                       <Listout todolist={todolist} getCall={() => getData()} updateData={setupdateTodo} modeChange={setmode} />
                     </div>}
 

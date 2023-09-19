@@ -26,13 +26,13 @@ const listout = ({ todolist, getCall, updateData, modeChange }: any) => {
             {
                 todolist?.map((data: any, id: any) => {
                     return (
-                        <div key={id} className='listdatas'><ul key={id} style={{ listStyleType: 'none', display: "flex", justifyContent: "space-between" }}>
+                        <div key={id} className='m-3 border-solid border-red-700  border-2 p-1'><ul key={id} className="flex justify-between list-none"  >
                             <li >{data.title}</li>
-                            <span style={{ display: "flex", justifyContent: "flex-end", }}>
-                                <button style={{ marginRight: "10px", cursor: "pointer" }} onClick={() => (
+                            <span className='flex justify-end'>
+                                <button className='mr-2 cursor-pointer' onClick={() => (
                                     updateData(data.title), modeChange("update"))
                                 }><BsPencilSquare /></button>
-                                <button style={{ marginRight: "5px", cursor: "pointer" }} onClick={() =>
+                                <button  className='mr-2 cursor-pointer' onClick={() =>
                                     deletetodo(data.title)
                                 }><MdDelete /></button>
                             </span>
